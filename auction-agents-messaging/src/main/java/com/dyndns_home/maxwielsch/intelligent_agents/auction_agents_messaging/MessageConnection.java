@@ -29,6 +29,15 @@ public class MessageConnection {
 	}
 
 	/**
+	 * Get the message sender, to communicate with another tcp end point.
+	 * 
+	 * @return A {@link MessageSender} object.
+	 */
+	public MessageSender getMessageSender() {
+		return messageSender;
+	}
+
+	/**
 	 * Call to stop listening to this connection and terminate the socket
 	 * connection.
 	 */
