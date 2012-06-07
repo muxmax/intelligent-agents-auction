@@ -1,0 +1,15 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.dyndns-home.maxwielsch.intelligent-agents</groupId>
+  <artifactId>auction-agents-messaging</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>auction-agents-messaging</name>
+  <description>A simple framework that can be used by auction agents (seller and purchaser) to handle the communication via special JSON messages asynchronous.</description>
+  <dependencies>
+  		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>org.json</artifactId>
+			<version>chargebee-1.0</version>
+		</dependency>
+  </dependencies>
+</project>
