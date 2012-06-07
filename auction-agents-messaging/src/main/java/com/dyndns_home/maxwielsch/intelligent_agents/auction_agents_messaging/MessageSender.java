@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.exceptions.InvalidJsonMessageException;
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.exceptions.InvalidParametersException;
 
 /**
  * This class handles the outgoing communication to another TCP end point.The
