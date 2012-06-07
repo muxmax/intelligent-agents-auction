@@ -1,22 +1,24 @@
 package com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.controllers;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageConnection;
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageHandler;
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageListener;
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageSender;
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageType;
 
-public class PurchaseController implements MessageHandler {
+public class NetworkController implements MessageHandler {
 
-	private MessageSender messageSender;
-	private MessageListener messageListener;
-	private Socket socket;
+	private List<MessageConnection> messageConnections;
+	private ServerSocket socket;
+	private boolean listen = true;
 
 	/**
 	 * Initialize TCP end points to communicate with auction's manger agent.
@@ -26,17 +28,31 @@ public class PurchaseController implements MessageHandler {
 	 * @param port
 	 *            The port of the auction's manger agent.
 	 */
-	public PurchaseController(String host, int port) {
+	public NetworkController(int port) {
 		try {
-			socket = new Socket(host, port);
-			messageSender = new MessageSender(socket);
-			messageListener = new MessageListener(socket, this);
+			socket = new ServerSocket(port);
+			messageConnections = new ArrayList<MessageConnection>();
+			listen();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	private void listen() {
+		while (listen) {
+			try {
+				Socket clientSocket = socket.accept();
+				MessageConnection connection = new MessageConnection(clientSocket,this);
+				messageConnections.add(connection);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 
@@ -57,9 +73,7 @@ public class PurchaseController implements MessageHandler {
 	}
 
 	private void processMessage(MessageType type, JSONObject messageObject) {
-		switch (type) {
-
-		}
+		System.out.println(messageObject.toString());
 	}
 
 }

@@ -2,7 +2,7 @@ package com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.io.InputStream;
 
 /**
  * This class handles the incoming communication from another TCP end point. The
@@ -24,33 +24,24 @@ public class MessageListener {
 	/**
 	 * Expects a socket whose connection is alive.
 	 * 
-	 * @param socket
-	 *            A socket to send messages to.
+	 * @param input
+	 *            An input stream to listen to.
 	 * @param messageHandler
 	 *            An hander implementing the interface {@link MessageHandler}.
 	 *            It is called when a message arrives at this end point.
-	 * @throws IOException
-	 *             Will be thrown when the socket connection is closed or the
-	 *             output stream can't be constructed from the socket.
 	 */
-	public MessageListener(Socket socket, MessageHandler messageHandler)
-			throws IOException {
+	public MessageListener(InputStream input, MessageHandler messageHandler) {
 
-		if (socket.isClosed() || !socket.isConnected()) {
-			throw new IOException(
-					"the socket given to construct the MessageReader isn't alive anymore!");
-		} else {
-			in = new BufferedInputStream(socket.getInputStream());
+			in = new BufferedInputStream(input);
 			this.messageHandler = messageHandler;
 			listen = true;
-		}
 	}
 
 	/**
 	 * Expects a socket whose connection is alive.
 	 * 
-	 * @param socket
-	 *            A socket to send messages to.
+	 * @param input
+	 *            An input stream to listen to.
 	 * @param messageHandler
 	 *            An hander implementing the interface {@link MessageHandler}.
 	 *            It is called when a message arrives at this end point.
@@ -59,13 +50,10 @@ public class MessageListener {
 	 *            signal the end of the message. As it has a special meaning and
 	 *            must be unique it mustn't be used in the message. The default
 	 *            delimiter is the char %.
-	 * @throws IOException
-	 *             Will be thrown when the socket connection is closed or the
-	 *             output stream can't be constructed from the socket.
 	 */
-	public MessageListener(Socket socket, MessageHandler messageHandler,
-			char messageDelimiter) throws IOException {
-		this(socket, messageHandler);
+	public MessageListener(InputStream input, MessageHandler messageHandler,
+			char messageDelimiter) {
+		this(input, messageHandler);
 		MESSAGE_DELIMITER = messageDelimiter;
 	}
 
@@ -81,14 +69,14 @@ public class MessageListener {
 	}
 
 	/**
-	 * Stop the MessageListener listening to the socket.
+	 * Stop the MessageListener listening to the input stream.
 	 */
 	public void stopListening() {
 		listen = false;
 	}
 
 	/**
-	 * Listen to the socket connection and handle the the message. When the
+	 * Listen to the inputStream and handle the the message. When the
 	 * message was read it is given to the message handler to decide how to deal
 	 * with this message.
 	 * 
@@ -103,7 +91,7 @@ public class MessageListener {
 	}
 
 	/**
-	 * Read the next message that is transmitted via the socket connection. As
+	 * Read the next message that is transmitted via the inputStream. As
 	 * long as no message is there this method waits for it.
 	 * 
 	 * @return The message read from the socket connection.

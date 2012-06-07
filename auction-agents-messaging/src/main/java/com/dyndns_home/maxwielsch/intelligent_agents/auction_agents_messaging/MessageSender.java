@@ -1,8 +1,8 @@
 package com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,27 +28,21 @@ public class MessageSender {
 	/**
 	 * Expects a socket whose connection is alive.
 	 * 
-	 * @param socket
-	 *            A socket to send messages to.
+	 * @param output
+	 *            An output stream to send messages over.
 	 * @throws IOException
 	 *             Will be thrown when the socket connection is closed or the
 	 *             output stream can't be constructed from the socket.
 	 */
-	public MessageSender(Socket socket) throws IOException {
-
-		if (socket.isClosed() || !socket.isConnected()) {
-			throw new IOException(
-					"the socket given to construct the MessageSender isn't alive anymore!");
-		} else {
-			out = new OutputStreamWriter(socket.getOutputStream());
-		}
+	public MessageSender(OutputStream output) throws IOException {
+			out = new OutputStreamWriter(output);
 	}
 
 	/**
 	 * Expects a socket whose connection is alive.
 	 * 
-	 * @param socket
-	 *            A socket to send messages to.
+	 * @param output
+	 *            An output stream to send messages over.
 	 * @param messageDelimiter
 	 *            a token that will be appended after all messages to send to
 	 *            signal the end of the message. As it has a special meaning and
@@ -58,9 +52,9 @@ public class MessageSender {
 	 *             Will be thrown when the socket connection is closed or the
 	 *             output stream can't be constructed from the socket.
 	 */
-	public MessageSender(Socket socket, char messageDelimiter)
+	public MessageSender(OutputStream output, char messageDelimiter)
 			throws IOException {
-		this(socket);
+		this(output);
 		MESSAGE_DELIMITER = messageDelimiter;
 	}
 
