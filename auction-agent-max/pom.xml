@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dyndns-home.maxwielsch.intelligent-agents</groupId>
-	<artifactId>auction-manager</artifactId>
+	<artifactId>auction-agent-max</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>auction-manager</name>
-	<description>An agent that manages the auction.</description>
+	<name>auction-agent-max</name>
+	<description>An agent that makes price makes price offers in a public auction.</description>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>

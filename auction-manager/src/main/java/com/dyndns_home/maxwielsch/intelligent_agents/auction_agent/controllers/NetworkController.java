@@ -14,7 +14,7 @@ import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.Me
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageHandler;
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageType;
 
-public class NetworkController implements MessageHandler {
+public class NetworkController extends Thread implements MessageHandler {
 
 	private List<MessageConnection> messageConnections;
 	private ServerSocket socket;
@@ -32,34 +32,38 @@ public class NetworkController implements MessageHandler {
 		try {
 			socket = new ServerSocket(port);
 			messageConnections = new ArrayList<MessageConnection>();
-			listen();
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-
-	private void listen() {
-		while (listen) {
-			try {
-				Socket clientSocket = socket.accept();
-				MessageConnection connection = new MessageConnection(clientSocket,this);
-				messageConnections.add(connection);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void handle(String jsonMessage) {
+	@Override
+	public void run() {
+		try {
+			while (listen) {
+				listen();
+			}
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void listen() throws IOException {
+		Socket clientSocket = socket.accept();
+		MessageConnection connection = new MessageConnection(clientSocket, this);
+		messageConnections.add(connection);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public synchronized void handle(String jsonMessage) {
 
 		try {
 			JSONObject messageObject = new JSONObject(jsonMessage);
@@ -74,6 +78,10 @@ public class NetworkController implements MessageHandler {
 
 	private void processMessage(MessageType type, JSONObject messageObject) {
 		System.out.println(messageObject.toString());
+	}
+
+	public synchronized void shutDown() {
+		listen = false;
 	}
 
 }
