@@ -7,16 +7,13 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.exceptions.InvalidJsonMessageException;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.server.ServerMessageConnection;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.server.ServerMessageHandler;
 
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageConnection;
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageHandler;
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageType;
+public class NetworkController extends Thread implements ServerMessageHandler {
 
-public class NetworkController extends Thread implements MessageHandler {
-
-	private List<MessageConnection> messageConnections;
+	private List<ServerMessageConnection> messageConnections;
 	private ServerSocket socket;
 	private boolean listen = true;
 
@@ -31,7 +28,7 @@ public class NetworkController extends Thread implements MessageHandler {
 	public NetworkController(int port) {
 		try {
 			socket = new ServerSocket(port);
-			messageConnections = new ArrayList<MessageConnection>();
+			messageConnections = new ArrayList<ServerMessageConnection>();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -51,37 +48,43 @@ public class NetworkController extends Thread implements MessageHandler {
 			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-
-	private void listen() throws IOException {
-		Socket clientSocket = socket.accept();
-		MessageConnection connection = new MessageConnection(clientSocket, this);
-		messageConnections.add(connection);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public synchronized void handle(String jsonMessage) {
-
-		try {
-			JSONObject messageObject = new JSONObject(jsonMessage);
-			String action = messageObject.getString("action");
-			MessageType type = MessageType.valueOf(action);
-			processMessage(type, messageObject);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+		} catch (InvalidJsonMessageException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void processMessage(MessageType type, JSONObject messageObject) {
-		System.out.println(messageObject.toString());
+	private void listen() throws IOException, InvalidJsonMessageException {
+		Socket clientSocket = socket.accept();
+		ServerMessageConnection connection = new ServerMessageConnection(clientSocket, this);
+		messageConnections.add(connection);
 	}
 
 	public synchronized void shutDown() {
 		listen = false;
+	}
+	
+	public synchronized void sendNewRoundMessage(int round, int amount, double price) {
+		for (ServerMessageConnection con : messageConnections) {
+			try {
+				con.getMessageSender().sendNewRoundMessage(round, amount, price);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidJsonMessageException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void handleParticipation(int round, double offer, String clientID) {
+		System.out.println("client " + clientID + " participates with offer : " + offer);
+	}
+
+	@Override
+	public void handlePausing(int round, String clientID) {
+		System.out.println("client " + clientID + " pauses this round");
 	}
 
 }

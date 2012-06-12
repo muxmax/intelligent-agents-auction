@@ -19,6 +19,9 @@ public class AuctionManager {
 		String line = reader.readLine().trim();
 		
 		while (!line.equals("q")) {
+			if (line.equals("n")) {
+				networkController.sendNewRoundMessage(1, 33, 44.4);
+			}
 			line = reader.readLine().trim();
 		}
 		networkController.shutDown();

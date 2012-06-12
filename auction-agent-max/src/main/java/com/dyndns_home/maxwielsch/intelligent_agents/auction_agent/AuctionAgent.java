@@ -5,28 +5,26 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageConnection;
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.MessageHandler;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.client.ClientMessageConnection;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.client.ClientMessageHandler;
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.exceptions.InvalidJsonMessageException;
 
-public class AuctionAgent implements MessageHandler {
+public class AuctionAgent implements ClientMessageHandler {
 
 	Socket managerSocket;
-	MessageConnection connection;
+	ClientMessageConnection connection;
 
 	public AuctionAgent(int managerPort) {
 		try {
 			managerSocket = new Socket(InetAddress.getLocalHost(), managerPort);
-			connection = new MessageConnection(managerSocket, this);
-			connection.getMessageSender().sendLogOnMessage();
+			// Starts listening automatically and blocks
+			connection = new ClientMessageConnection(managerSocket, this);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("auction manager isn't online!");
+			System.err.println("auction manager isn't online!");
 		} catch (InvalidJsonMessageException e) {
-			System.out.println("JSON Message Error!\n");
-			e.printStackTrace();
+			System.err.println("auction manager complains about wrong message format!");
 		}
 	}
 
@@ -42,7 +40,19 @@ public class AuctionAgent implements MessageHandler {
 	}
 
 	@Override
-	public void handle(String jsonMessage) {
-		System.out.println("Incomming from auction manager:\n" + jsonMessage);
+	public void handleNewAuctionRound(int roundNumber, int amount, double price) {
+		System.out.println("new auction round:" + roundNumber + " amount, price: " + amount + ", " + price);
 	}
+
+	@Override
+	public void handleEndAuctionRound(String winner) {
+		System.out.println("end auction round - winner: " + winner);
+	}
+
+	@Override
+	public void handleAuctionEnd() {
+		System.out.println("finish!");
+	}
+
+	
 }
