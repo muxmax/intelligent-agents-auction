@@ -1,21 +1,23 @@
 package com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.client;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.exceptions.InvalidJsonMessageException;
 
 public class ClientMessageConnection {
 
-	private Socket socket;
 	private ClientMessageListener messageListener;
 	private ClientMessageSender messageSender;
 
 	/**
 	 * Construct a message connection.
 	 * 
-	 * @param socket
-	 *            A socket that is already open.
+	 * @param address
+	 *            An Internet address where the server (auction manager) runs.
+	 * @param port
+	 *            A port that the server listens to.
 	 * @param messageHandler
 	 *            The handler that will be called when a message comes in.
 	 * @throws IOException
@@ -26,10 +28,10 @@ public class ClientMessageConnection {
 	 *             message is not JSOn message. It only doesn't have the
 	 *             required key value pairs.
 	 */
-	public ClientMessageConnection(Socket socket,
+	public ClientMessageConnection(InetAddress address, int port,
 			ClientMessageHandler messageHandler) throws IOException,
 			InvalidJsonMessageException {
-		this.socket = socket;
+		Socket socket = new Socket(address, port);
 		messageSender = new ClientMessageSender(socket.getOutputStream());
 		messageListener = new ClientMessageListener(socket.getInputStream(),
 				messageHandler);
@@ -45,17 +47,4 @@ public class ClientMessageConnection {
 		return messageSender;
 	}
 
-	/**
-	 * Call to stop listening to this connection and terminate the socket
-	 * connection.
-	 */
-	public void close() {
-		try {
-			messageListener.stopListening();
-			socket.close();
-		} catch (IOException e) {
-			// Connection seems to be closed already.
-			e.printStackTrace();
-		}
-	}
 }
