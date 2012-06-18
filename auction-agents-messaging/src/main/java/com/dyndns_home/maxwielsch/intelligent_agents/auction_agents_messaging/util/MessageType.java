@@ -7,7 +7,7 @@ package com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.u
 public enum MessageType {
 
 	NEW_ROUND("NEW_ROUND"), PAUSE("PAUSE"), PARTICIPATE(
-			"PARTICIPATE"), END_ROUND("END_ROUND"), AUCTION_END("ÁUCTION_END");
+			"PARTICIPATE"), END_ROUND("END_ROUND"), END_AUCTION("END_AUCTION"), ACCEPT_OFFER("ACCEPT_OFFER");
 
 	private String action;
 

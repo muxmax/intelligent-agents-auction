@@ -47,6 +47,15 @@ public class ServerMessageConnection {
 	}
 
 	/**
+	 * Get the port of the connected client.
+	 * 
+	 * @return A port number of the client.
+	 */
+	public int getConnectionPort() {
+		return socket.getPort();
+	}
+
+	/**
 	 * Call to stop listening to this connection and terminate the socket
 	 * connection.
 	 */

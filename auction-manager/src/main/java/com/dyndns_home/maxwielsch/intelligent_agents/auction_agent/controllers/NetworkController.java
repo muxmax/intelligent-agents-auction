@@ -79,12 +79,27 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 
 	@Override
 	public void handleParticipation(int round, double offer, String clientID) {
-		System.out.println("client " + clientID + " participates with offer : " + offer);
+		
+		
 	}
 
 	@Override
 	public void handlePausing(int round, String clientID) {
 		System.out.println("client " + clientID + " pauses this round");
+	}
+	
+	public void propagateDecision(String clientID, double priceAccepted) {
+		for (ServerMessageConnection connection : messageConnections) {
+			try {
+				connection.getMessageSender().sendLastAcceptedOffer(clientID, priceAccepted);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidJsonMessageException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

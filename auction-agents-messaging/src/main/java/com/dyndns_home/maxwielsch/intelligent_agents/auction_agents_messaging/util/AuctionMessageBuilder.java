@@ -28,12 +28,6 @@ public class AuctionMessageBuilder {
 	 *            <th>comment</th>
 	 *            </tr>
 	 *            <tr>
-	 *            <td>AUCTION_END</td>
-	 *            <td>none</td>
-	 *            <td>none</td>
-	 *            <td>No parameters are needed. So the argument can be null.</td>
-	 *            </tr>
-	 *            <tr>
 	 *            <td>NEW_ROUND</td>
 	 *            <td>round</td>
 	 *            <td>int</td>
@@ -70,10 +64,29 @@ public class AuctionMessageBuilder {
 	 *            <td></td>
 	 *            </tr>
 	 *            <tr>
+	 *            <td>ACCEPT_OFFER</td>
+	 *            <td>participant</td>
+	 *            <td>String</td>
+	 *            <td>An unique identifier for the participant whose offer was
+	 *            successful.</td>
+	 *            </tr>
+	 *            <tr>
+	 *            <td></td>
+	 *            <td>price</td>
+	 *            <td>double</td>
+	 *            <td>The price that was the highest one until now.</td>
+	 *            </tr>
+	 *            <tr>
 	 *            <td>END_ROUND</td>
 	 *            <td>winner</td>
 	 *            <td>String</td>
 	 *            <td>The participant, who won the auction round.</td>
+	 *            </tr>
+	 *            <tr>
+	 *            <td>END_AUCTION</td>
+	 *            <td>none</td>
+	 *            <td>none</td>
+	 *            <td>No parameters are needed. So the argument can be null.</td>
 	 *            </tr>
 	 *            </table>
 	 * @throws InvalidJsonMessageException
@@ -85,8 +98,9 @@ public class AuctionMessageBuilder {
 	 *             a message ought to be sent via the socket.
 	 * @see MessageType
 	 */
-	public static String build(MessageType messageType, Map<String, String> parameters)
-			throws IOException, InvalidJsonMessageException {
+	public static String build(MessageType messageType,
+			Map<String, String> parameters) throws IOException,
+			InvalidJsonMessageException {
 
 		StringBuilder jsonMessageBuilder = new StringBuilder("{action:'"
 				+ messageType.getAction() + "'");

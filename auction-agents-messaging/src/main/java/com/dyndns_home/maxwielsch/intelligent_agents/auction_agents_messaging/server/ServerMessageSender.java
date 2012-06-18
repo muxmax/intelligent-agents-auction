@@ -117,6 +117,33 @@ public class ServerMessageSender {
 	}
 
 	/**
+	 * Create a JSON message to announce the highest offer and the participant
+	 * that is accepted.
+	 * 
+	 * @param clientID
+	 *            The participant's name (must be unique) who made the highest
+	 *            offer.
+	 * @param priceAccepted
+	 *            The price that is accepted by the manager.
+	 * @throws IOException
+	 *             Will be thrown, if there occurs an error with the socket
+	 *             connection. This might happen when the socket was closed and
+	 *             a message ought to be sent via the socket.
+	 * @throws InvalidJsonMessageException
+	 *             Will be thrown when the created message could not be parsed
+	 *             into a JSON object.
+	 */
+	public void sendLastAcceptedOffer(String clientID, double priceAccepted)
+			throws IOException, InvalidJsonMessageException {
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("participant", clientID);
+		parameters.put("price", String.valueOf(priceAccepted));
+		String jsonMessage = AuctionMessageBuilder.build(
+				MessageType.ACCEPT_OFFER, null);
+		sendMessage(jsonMessage);
+	}
+
+	/**
 	 * Create a JSON message that tells the winning participant.
 	 * 
 	 * @param winner
@@ -155,7 +182,7 @@ public class ServerMessageSender {
 	public void sendAuctionEndMessage() throws IOException,
 			InvalidJsonMessageException {
 		String jsonMessage = AuctionMessageBuilder.build(
-				MessageType.AUCTION_END, null);
+				MessageType.END_AUCTION, null);
 		sendMessage(jsonMessage);
 	}
 

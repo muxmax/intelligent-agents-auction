@@ -22,6 +22,16 @@ public interface ClientMessageHandler {
 	public void handleNewAuctionRound(int roundNumber, int amount, double price);
 
 	/**
+	 * Handle the message for last accepted offer.
+	 * 
+	 * @param participant
+	 *            The participant whose offer was accept by the manager.
+	 * @param price
+	 *            The highest price that was offered.
+	 */
+	public void handleLastAcceptedOffer(String participant, double price);
+
+	/**
 	 * Handle the message for the end of the actual auction round.
 	 * 
 	 * @param winner

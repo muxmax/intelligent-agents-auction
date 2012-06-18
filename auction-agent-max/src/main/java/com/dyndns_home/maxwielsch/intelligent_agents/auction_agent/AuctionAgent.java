@@ -2,7 +2,6 @@ package com.dyndns_home.maxwielsch.intelligent_agents.auction_agent;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.client.ClientMessageConnection;
@@ -50,6 +49,12 @@ public class AuctionAgent implements ClientMessageHandler {
 	@Override
 	public void handleAuctionEnd() {
 		System.out.println("finish!");
+	}
+
+	@Override
+	public void handleLastAcceptedOffer(String participant, double price) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

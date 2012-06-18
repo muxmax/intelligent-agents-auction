@@ -121,7 +121,10 @@ public class ClientMessageListener {
 			case END_ROUND:
 				handleEndRound(jsonObject);
 				break;
-			case AUCTION_END:
+			case ACCEPT_OFFER:
+				handleLastAcceptedOffer(jsonObject);
+				break;
+			case END_AUCTION:
 				handleAuctionEnd();
 				break;
 			default:
@@ -172,6 +175,24 @@ public class ClientMessageListener {
 		} else {
 			messageHandler.handleEndAuctionRound(winner);
 		}
+	}
+	
+	/**
+	 * Call the message handler and tell it the message parameters.
+	 * 
+	 * @param jsonObject
+	 *            The message object that could be parsed out of the JSON
+	 *            message.
+	 * @throws JSONException
+	 *             Will be thrown when the communication partner sends an
+	 *             invalid JSON message. This doesn't necessarily mean that the
+	 *             message is not JSOn message. It only doesn't have the
+	 *             required key value pairs.
+	 */
+	private void handleLastAcceptedOffer(JSONObject jsonObject) throws JSONException {
+		String participant = jsonObject.getString("participant");
+		double price = jsonObject.getDouble("price");
+		messageHandler.handleLastAcceptedOffer(participant, price);
 	}
 
 	/**
