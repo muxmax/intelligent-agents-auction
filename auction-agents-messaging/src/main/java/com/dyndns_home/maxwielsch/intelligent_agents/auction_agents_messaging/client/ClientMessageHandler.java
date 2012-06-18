@@ -25,7 +25,11 @@ public interface ClientMessageHandler {
 	 * Handle the message for the end of the actual auction round.
 	 * 
 	 * @param winner
-	 *            The auction agent that won the round.
+	 *            <ul>
+	 *            <li>The auction agent that won the round, if there is a
+	 *            winner.</li>
+	 *            <li>null, if there is no winner.</li>
+	 *            </ul>
 	 */
 	public void handleEndAuctionRound(String winner);
 

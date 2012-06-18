@@ -167,7 +167,11 @@ public class ClientMessageListener {
 	 */
 	private void handleEndRound(JSONObject jsonObject) throws JSONException {
 		String winner = jsonObject.getString("winner");
-		messageHandler.handleEndAuctionRound(winner);
+		if (winner == null || winner.length() == 0) {
+			messageHandler.handleEndAuctionRound(null);
+		} else {
+			messageHandler.handleEndAuctionRound(winner);
+		}
 	}
 
 	/**
