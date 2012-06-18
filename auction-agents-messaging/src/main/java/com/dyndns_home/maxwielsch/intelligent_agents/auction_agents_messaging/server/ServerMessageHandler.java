@@ -16,20 +16,21 @@ public interface ServerMessageHandler {
 	 *            The auction's round to that the offer relates to.
 	 * @param offer
 	 *            The price that a client would pay.
-	 * @param clientID
-	 *            An unique value to identify a client connection. This could be
-	 *            the client port.
+	 * @param participantID
+	 *            An unique value to identify a participant. This could be the
+	 *            client port.
 	 */
-	public void handleParticipation(int round, double offer, String clientID);
+	public void handleParticipation(int round, double offer,
+			String participantID);
 
 	/**
 	 * Handle the message for pausing a round.
 	 * 
 	 * @param round
 	 *            The auction's round to that the client wants to pause.
-	 * @param clientID
-	 *            An unique value to identify a client connection. This could be
+	 * @param participantID
+	 *            An unique value to identify a participant. This could be
 	 *            the client port.
 	 */
-	public void handlePausing(int round, String clientID);
+	public void handlePausing(int round, String participantID);
 }
