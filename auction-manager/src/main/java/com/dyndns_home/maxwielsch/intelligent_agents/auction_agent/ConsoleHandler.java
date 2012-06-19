@@ -1,6 +1,6 @@
 package com.dyndns_home.maxwielsch.intelligent_agents.auction_agent;
 
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.impl.AuctionSettings;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.model.AuctionSettings;
 
 /**
  * This interface should be implemented by the class that needs to get the

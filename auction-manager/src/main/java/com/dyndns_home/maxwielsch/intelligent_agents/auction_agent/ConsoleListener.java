@@ -6,7 +6,8 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.impl.AuctionSettings;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.model.AuctionSettings;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.model.Good;
 
 /**
  * This class handles the initial console communication with the user to set up
@@ -89,7 +90,7 @@ public class ConsoleListener extends Thread {
 			line = inputReader.readLine().trim();
 			Matcher matcher = goodsPattern.matcher(line);
 			if (matcher.matches()) {
-				settings.goods.add(settings.new Good(Integer.parseInt(matcher
+				settings.goods.add(new Good(Integer.parseInt(matcher
 						.group(1)), Double.parseDouble(matcher.group(2))));
 			} else {
 				System.out

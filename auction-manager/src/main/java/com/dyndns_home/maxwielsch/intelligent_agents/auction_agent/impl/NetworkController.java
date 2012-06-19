@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.AuctionHandler;
+import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.AuctionRoundHandler;
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.exceptions.InvalidJsonMessageException;
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.server.ServerMessageConnection;
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.server.ServerMessageHandler;
@@ -19,17 +20,19 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 	private boolean listen = true;
 	private int expectedParticipantAmount;
 	private AuctionHandler auctionHandler;
+	private AuctionRoundHandler auctionRoundHandler;
 
 	/**
 	 * Initialize TCP end points to communicate with auction's manger agent.
 	 * 
-	 * @param host
-	 *            The host address of the auction's manger agent.
-	 * @param expectedParticipantAmount
-	 *            The amount of participants that are expected to connect to
-	 *            the manager.
 	 * @param port
 	 *            The port of the auction's manger agent.
+	 * @param expectedParticipantAmount
+	 *            The amount of participants that are expected to connect to the
+	 *            manager.
+	 * @param auctionHandler
+	 *            The initial {@link AuctionHandler}. The host address of the
+	 *            auction's manger agent.
 	 */
 	public NetworkController(int port, int expectedParticipantAmount,
 			AuctionHandler auctionHandler) {
@@ -67,7 +70,7 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 		ServerMessageConnection connection = new ServerMessageConnection(
 				clientSocket, this);
 		messageConnections.add(connection);
-		
+
 		if (expectedParticipantAmount == messageConnections.size()) {
 			auctionHandler.participantsComplete();
 		}
@@ -97,7 +100,7 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 	@Override
 	public void handleParticipation(int round, double offer,
 			String participantID) {
-		auctionHandler.handleParticipation(round, offer, participantID);
+		auctionRoundHandler.handleParticipation(round, offer, participantID);
 	}
 
 	/**
@@ -105,7 +108,7 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 	 */
 	@Override
 	public void handlePausing(int round, String participantID) {
-		auctionHandler.handlePausing(participantID);
+		auctionRoundHandler.handlePausing(participantID);
 	}
 
 	/**
@@ -128,6 +131,16 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 				System.err.println("Error with message protocoll:\n" + e);
 			}
 		}
+	}
+
+	/**
+	 * Set the handler for the actual auction round.
+	 * 
+	 * @param auctionRoundHandler
+	 *            A handler for the auction round.
+	 */
+	public void setAuctionRoundHandler(AuctionRoundHandler auctionRoundHandler) {
+		this.auctionRoundHandler = auctionRoundHandler;
 	}
 
 }
