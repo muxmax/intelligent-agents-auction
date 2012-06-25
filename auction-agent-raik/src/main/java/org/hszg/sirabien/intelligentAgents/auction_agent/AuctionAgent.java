@@ -11,10 +11,6 @@ import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.ex
 
 public class AuctionAgent implements ClientMessageHandler {
 
-	/**
-	 * Time of one round in milliseconds.
-	 */
-	private static final int ROUND_TIME = 1 * 60 * 1000;
 	private static final long START_MONEY = 100000;
 
 	private ClientMessageConnection connection;
@@ -29,6 +25,8 @@ public class AuctionAgent implements ClientMessageHandler {
 	 * The amount of good that have already been won.
 	 */
 	private long currentAmount;
+	private long roundBet;
+	private int roundAmount;
 
 	private AuctionAgent(String[] args) {
 		currentMoney = START_MONEY;
@@ -70,12 +68,13 @@ public class AuctionAgent implements ClientMessageHandler {
 	@Override
 	public void handleNewAuctionRound(int roundNumber, int amount, long price) {
 		long tenth = currentMoney / 10;
-		long bet = 3 * tenth + random.nextInt(4 * (int) tenth);
-		System.out.println("new auction round, bet " + toMoney(bet) + " for " + amount
-				+ " units.");
+		roundBet = 3 * tenth + random.nextInt(4 * (int) tenth);
+		roundAmount = amount;
+		System.out.println("new auction round, bet " + toMoney(roundBet)
+				+ " for " + amount + " units.");
 		try {
 			connection.getMessageSender().sendParticipateMessage(roundNumber,
-					bet);
+					roundBet);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,18 +86,26 @@ public class AuctionAgent implements ClientMessageHandler {
 
 	@Override
 	public void handleLastAcceptedOffer(String participant, long price) {
-		System.out.println("current offer: " + toMoney(price) + " from " + participant
+		System.out.println("current offer: " + toMoney(price) + " from "
+				+ participant
 				+ (connection.isMe(participant) ? " (that's me)" : ""));
 	}
 
 	@Override
 	public void handleEndAuctionRound(String winner) {
-		System.out.println("end auction round, "
-				+ (connection.isMe(winner) ? "i've won" : "i haven't won"));
+		boolean won = connection.isMe(winner);
+		currentMoney -= roundBet;
+		currentAmount += roundAmount;
+		System.out.print("end of round, "
+				+ (won ? "i've won" : "i haven't won"));
+		System.out.println(", current won amount: " + currentAmount
+				+ ", money spend: " + toMoney(START_MONEY - currentMoney)
+				+ ", money remaining: " + toMoney(currentMoney));
 	}
 
 	@Override
 	public void handleAuctionEnd() {
+		System.out.println();
 		System.out.println("The auction has finished. I've won "
 				+ currentAmount + " for " + toMoney(START_MONEY - currentMoney)
 				+ ". I've " + toMoney(currentMoney) + " remaining.");

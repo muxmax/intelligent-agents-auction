@@ -11,6 +11,7 @@ public class ClientMessageConnection {
 	private ClientMessageListener messageListener;
 	private ClientMessageSender messageSender;
 	private int port;
+	private Socket socket;
 
 	/**
 	 * Construct a message connection using the default port (50000).
@@ -39,7 +40,7 @@ public class ClientMessageConnection {
 	public ClientMessageConnection(InetAddress address, int port,
 			ClientMessageHandler messageHandler) throws IOException,
 			InvalidJsonMessageException {
-		Socket socket = new Socket(address, port);
+		socket = new Socket(address, port);
 		this.port = port;
 		messageSender = new ClientMessageSender(socket.getOutputStream());
 		messageListener = new ClientMessageListener(socket.getInputStream(),
@@ -82,6 +83,6 @@ public class ClientMessageConnection {
 	 * @return
 	 */
 	public boolean isMe(String client) {
-		return ""+port == client;
+		return (""+socket.getLocalPort()).equals(client);
 	}
 }
