@@ -10,12 +10,9 @@ import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.ex
 
 public class AuctionAgent implements ClientMessageHandler {
 
-	private static final int ROUND_TIME = 1 * 60 * 1000;
-		
 	ClientMessageConnection connection;
 	private final InetAddress managerAddress;
 	private final int managerPort;
-	private long currentMoney;
 	private int actualRound;
 	
 	public AuctionAgent(InetAddress managerAddress, int managerPort) {
@@ -53,9 +50,7 @@ public class AuctionAgent implements ClientMessageHandler {
 	public void handleNewAuctionRound(int roundNumber, int amount, long price) {
 		System.out.println("new auction round:" + roundNumber + " amount, price: " + amount + ", " + price);
 		actualRound = roundNumber;
-		long myPrice = price;
-		sendOffer(roundNumber, myPrice);
-		currentMoney = currentMoney + myPrice;
+		sendOffer(roundNumber, price);
 	}
 
 	@Override
@@ -65,7 +60,7 @@ public class AuctionAgent implements ClientMessageHandler {
 
 	@Override
 	public void handleAuctionEnd() {
-		System.out.println("finish!");		
+		System.out.println("finish!");
 	}
 
 	@Override
