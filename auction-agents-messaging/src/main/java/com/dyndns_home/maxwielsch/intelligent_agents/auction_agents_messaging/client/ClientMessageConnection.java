@@ -58,8 +58,9 @@ public class ClientMessageConnection {
 	public int getPort() {
 		return port;
 	}
-	
-	/** @throws InvalidJsonMessageException
+
+	/**
+	 * @throws InvalidJsonMessageException
 	 *             Will be thrown when the communication partner sends an
 	 *             invalid JSON message. This doesn't necessarily mean that the
 	 *             message is not JSOn message. It only doesn't have the
@@ -69,4 +70,18 @@ public class ClientMessageConnection {
 		messageListener.startListenting();
 	}
 
+	/**
+	 * Checks if a string that stands for a partipiciant is the name of this
+	 * agent.
+	 * 
+	 * @param client
+	 *            the name of a client (e.g. the participant argument of the
+	 *            {@link ClientMessageHandler#handleLastAcceptedOffer(String, long)}
+	 *            or the winner argument of
+	 *            {@link ClientMessageHandler#handleEndAuctionRound(String)}.
+	 * @return
+	 */
+	public boolean isMe(String client) {
+		return ""+port == client;
+	}
 }
