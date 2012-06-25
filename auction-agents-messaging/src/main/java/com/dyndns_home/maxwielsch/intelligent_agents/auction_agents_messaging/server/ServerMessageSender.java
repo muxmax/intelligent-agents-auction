@@ -139,7 +139,7 @@ public class ServerMessageSender {
 		parameters.put("participant", clientID);
 		parameters.put("price", String.valueOf(priceAccepted));
 		String jsonMessage = AuctionMessageBuilder.build(
-				MessageType.ACCEPT_OFFER, null);
+				MessageType.ACCEPT_OFFER, parameters);
 		sendMessage(jsonMessage);
 	}
 
