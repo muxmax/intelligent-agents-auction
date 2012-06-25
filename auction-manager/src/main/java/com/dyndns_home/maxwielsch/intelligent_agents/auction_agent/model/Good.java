@@ -15,6 +15,6 @@ public class Good {
 
 	@Override
 	public String toString() {
-		return "(amount: " + amount + ", price: " + price + ")\n";
+		return "(amount: " + amount + ", price: " + price / 100.00 + ")\n";
 	}
 }

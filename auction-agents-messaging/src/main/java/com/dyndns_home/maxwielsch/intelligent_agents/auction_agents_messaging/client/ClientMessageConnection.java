@@ -56,6 +56,11 @@ public class ClientMessageConnection {
 		return messageSender;
 	}
 
+	/**
+	 * Get the port number of the server connection.
+	 * 
+	 * @return A port number.
+	 */
 	public int getPort() {
 		return port;
 	}
@@ -83,6 +88,6 @@ public class ClientMessageConnection {
 	 * @return
 	 */
 	public boolean isMe(String client) {
-		return (""+socket.getLocalPort()).equals(client);
+		return ("" + socket.getLocalPort()).equals(client);
 	}
 }

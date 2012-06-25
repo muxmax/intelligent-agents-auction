@@ -65,6 +65,17 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 		}
 	}
 
+	/**
+	 * Listen for new client connections
+	 * 
+	 * @throws IOException
+	 *             Will be thrown when an error occurs while listening.
+	 * @throws InvalidJsonMessageException
+	 *             Will be thrown when the communication partner sends an
+	 *             invalid JSON message. This doesn't necessarily mean that the
+	 *             message is not JSOn message. It only doesn't have the
+	 *             required key value pairs.
+	 */
 	private void listen() throws IOException, InvalidJsonMessageException {
 		Socket clientSocket = socket.accept();
 		ServerMessageConnection connection = new ServerMessageConnection(
@@ -76,6 +87,10 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 		}
 	}
 
+	/**
+	 * Send a message to clients that the auction is finished and shut down
+	 * connection.
+	 */
 	public synchronized void shutDown() {
 		for (ServerMessageConnection connection : messageConnections) {
 			try {
@@ -89,6 +104,16 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 		listen = false;
 	}
 
+	/**
+	 * Send a message to all clients of the beginning of a new round.
+	 * 
+	 * @param round
+	 *            The round number of the new round.
+	 * @param amount
+	 *            The amount of goods that are offered.
+	 * @param price
+	 *            The beginning price that has to be bidden at least.
+	 */
 	public void sendNewRoundMessage(int round, int amount, long price) {
 		for (ServerMessageConnection connection : messageConnections) {
 			try {
@@ -102,6 +127,14 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 		}
 	}
 
+	/**
+	 * Send a message to all clients with the accepted offer.
+	 * 
+	 * @param participantID
+	 *            The id of the participant whose offer was accepted.
+	 * @param priceAccepted
+	 *            The price that was bidden.
+	 */
 	public void sendAcceptedOffer(String participantID, long priceAccepted) {
 		for (ServerMessageConnection connection : messageConnections) {
 			try {
@@ -137,8 +170,7 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void handleParticipation(int round, long offer,
-			String participantID) {
+	public void handleParticipation(int round, long offer, String participantID) {
 		auctionRoundHandler.handleParticipation(round, offer, participantID);
 	}
 

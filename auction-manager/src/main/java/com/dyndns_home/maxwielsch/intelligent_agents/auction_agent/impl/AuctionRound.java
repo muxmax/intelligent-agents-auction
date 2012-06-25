@@ -33,7 +33,8 @@ public class AuctionRound implements AuctionRoundHandler {
 
 		networkController.setAuctionRoundHandler(this);
 
-		acceptedOffer = new Offer(settings.goods.get(settings.actualRound - 1), settings.actualRound);
+		acceptedOffer = new Offer(settings.goods.get(settings.actualRound - 1),
+				settings.actualRound);
 
 		participantsOfferRecived = new HashMap<String, Long>();
 		offersRecived = 0;
@@ -48,9 +49,8 @@ public class AuctionRound implements AuctionRoundHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void handleParticipation(int round, long offer,
-			String participantID) {
-		System.out.println("--> recived offer: " + offer
+	public void handleParticipation(int round, long offer, String participantID) {
+		System.out.println("--> recived offer: " + offer / 100.00
 				+ " from participant with id: " + participantID);
 
 		if (pausingParticipants.contains(participantID)) {
@@ -58,30 +58,34 @@ public class AuctionRound implements AuctionRoundHandler {
 					.indexOf(participantID));
 		}
 		if (offersRecived < (settings.participants - pausingParticipants.size())) {
-			participantsOfferRecived.put(participantID, offer);
-			offersRecived++;
+			if (!participantsOfferRecived.keySet().contains(participantID)) {
+				participantsOfferRecived.put(participantID, offer);
+				offersRecived++;
+			}
 		}
 		if (offersRecived == settings.participants) {
-			lookUpAcceptedOffer();
+			lookUpAcceptedOffer(participantsOfferRecived);
 		}
 	}
 
 	/**
 	 * Look up for the best offers and propagate it to the participants.
 	 */
-	private void lookUpAcceptedOffer() {
-		for (String key : participantsOfferRecived.keySet()) {
-			long price = participantsOfferRecived.get(key);
+	private void lookUpAcceptedOffer(Map<String, Long> participantsOffers) {
+		for (String key : participantsOffers.keySet()) {
+			long price = participantsOffers.get(key);
 			if (price > acceptedOffer.price) {
 				acceptedOffer.price = price;
 				acceptedOffer.offerand = key;
 			}
-			offersRecived = 0;
+
 		}
+		offersRecived = 0;
+		participantsOffers.clear();
 		networkController.sendAcceptedOffer(acceptedOffer.offerand,
 				acceptedOffer.price);
 		System.out.println("<-- propagate accepted offer: "
-				+ acceptedOffer.price + ", participant with id: "
+				+ acceptedOffer.price / 100.00 + ", participant with id: "
 				+ acceptedOffer.offerand);
 	}
 

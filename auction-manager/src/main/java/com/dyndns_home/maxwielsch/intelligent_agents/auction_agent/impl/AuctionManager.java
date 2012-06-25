@@ -2,7 +2,9 @@ package com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 
 import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.AuctionHandler;
@@ -66,7 +68,7 @@ public class AuctionManager implements AuctionHandler, ConsoleHandler {
 	}
 
 	/**
-	 * A finished auction round is responsible to let begin the next round.
+	 * Begin a new auction round.
 	 */
 	public void beginNextRound() {
 		settings.actualRound = settings.actualRound + 1;
@@ -83,6 +85,9 @@ public class AuctionManager implements AuctionHandler, ConsoleHandler {
 		}
 	}
 
+	/**
+	 * Finish the actual auction round.
+	 */
 	public void finishActualRound() {
 		networkController
 				.sendAuctionRoundEnd(actualAuctionRound.getResult().offerand);
@@ -97,6 +102,30 @@ public class AuctionManager implements AuctionHandler, ConsoleHandler {
 		for (Offer offer : dealtOffers) {
 			System.out.println(offer);
 		}
+		System.out.println("======================================");
+		System.out.println("... summarized results by participant:");
+		Map<String, Integer> summary = getSummary();
+		for (String key : summary.keySet()) {
+			System.out.println(key + ": " + summary.get(key) + " goods bought");
+		}
+	}
+
+	/**
+	 * Get a summarized result by each participant.
+	 * 
+	 * @return A map containing the participantID and the bought goods amount.
+	 */
+	private Map<String, Integer> getSummary() {
+		Map<String, Integer> summary = new HashMap<String, Integer>();
+		for (Offer offer : dealtOffers) {
+			if (summary.containsKey(offer.offerand)) {
+				int oldAmount = summary.get(offer.offerand);
+				summary.put(offer.offerand, offer.good.amount + oldAmount);
+			} else {
+				summary.put(offer.offerand, offer.good.amount);
+			}
+		}
+		return summary;
 	}
 
 	/**

@@ -70,11 +70,12 @@ public class ServerMessageListener extends Thread {
 	 *            the client port.
 	 */
 	public ServerMessageListener(InputStream input,
-			ServerMessageHandler messageHandler, char messageDelimiter, String clientID) {
+			ServerMessageHandler messageHandler, char messageDelimiter,
+			String clientID) {
 		this(input, messageHandler, clientID);
 		MESSAGE_DELIMITER = messageDelimiter;
 	}
-	
+
 	/**
 	 * Begin listening to the auction managers messages.
 	 * 
@@ -126,7 +127,9 @@ public class ServerMessageListener extends Thread {
 
 		try {
 			JSONObject jsonObject = new JSONObject(message);
-
+//			System.out.println("####");
+//			System.out.println(jsonObject.toString());
+//			System.out.println("####");
 			switch (MessageType.valueOf(jsonObject.getString("action"))) {
 			case PARTICIPATE:
 				handleParticipation(jsonObject);
@@ -140,7 +143,7 @@ public class ServerMessageListener extends Thread {
 			}
 		} catch (JSONException e) {
 			throw new InvalidJsonMessageException(
-					"The Server send an invalid JSON message!", e);
+					"The Client send an invalid JSON message!", e);
 		}
 	}
 
@@ -159,7 +162,7 @@ public class ServerMessageListener extends Thread {
 	private void handlePausing(JSONObject jsonObject) throws JSONException {
 		int round = jsonObject.getInt("round");
 		messageHandler.handlePausing(round, clientID);
-	} 
+	}
 
 	/**
 	 * Call the message handler and tell it the message parameters.

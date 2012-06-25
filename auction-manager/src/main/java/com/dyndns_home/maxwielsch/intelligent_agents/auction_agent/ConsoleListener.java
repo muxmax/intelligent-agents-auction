@@ -80,7 +80,7 @@ public class ConsoleListener extends Thread {
 		settings.rounds = Integer.parseInt(line);
 
 		System.out
-				.println("Please enter the goods that you want to sell as follows '<amount> <price>' when you are asked for.");
+				.println("Please enter the goods that you want to sell as follows '<amount> <price>' (<price> in cents) when you are asked for.");
 
 		int rounds = Integer.parseInt(line);
 		Pattern goodsPattern = Pattern
