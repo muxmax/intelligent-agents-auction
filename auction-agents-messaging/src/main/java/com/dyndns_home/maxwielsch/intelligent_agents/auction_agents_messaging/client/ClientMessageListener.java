@@ -214,10 +214,15 @@ public class ClientMessageListener {
 	private String getNextIncomingMessage() throws IOException {
 
 		StringBuffer buffer = new StringBuffer();
-		char charackter;
+		char character;
 
-		while ((charackter = (char) in.read()) != MESSAGE_DELIMITER) {
-			buffer.append(((char) charackter));
+		while ((character = (char) in.read()) != MESSAGE_DELIMITER) {
+			if(character == 65535) {
+				//TODO find out why 65535
+				listen = false;
+				break;
+			}
+			buffer.append(((char) character));
 		}
 		return buffer.toString();
 	}
