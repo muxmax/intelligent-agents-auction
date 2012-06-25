@@ -11,11 +11,19 @@ import com.dyndns_home.maxwielsch.intelligent_agents.auction_agents_messaging.ex
 public class AuctionAgent implements ClientMessageHandler {
 
 	ClientMessageConnection connection;
+	private final InetAddress managerAddress;
+	private final int managerPort;
 
 	public AuctionAgent(InetAddress managerAddress, int managerPort) {
+		this.managerAddress = managerAddress;
+		this.managerPort = managerPort;
+	}
+	
+	public void start() {
 		try {
 			// Starts listening automatically and blocks
 			connection = new ClientMessageConnection(managerAddress, managerPort, this);
+			connection.establish();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

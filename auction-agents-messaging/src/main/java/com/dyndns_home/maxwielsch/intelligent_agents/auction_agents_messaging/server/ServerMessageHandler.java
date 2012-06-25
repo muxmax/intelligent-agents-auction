@@ -33,4 +33,5 @@ public interface ServerMessageHandler {
 	 *            the client port.
 	 */
 	public void handlePausing(int round, String participantID);
+
 }
