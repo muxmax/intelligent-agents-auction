@@ -126,6 +126,7 @@ public class ClientMessageListener {
 				break;
 			case END_AUCTION:
 				handleAuctionEnd();
+				
 				break;
 			default:
 				throw new JSONException(
@@ -200,6 +201,7 @@ public class ClientMessageListener {
 	 */
 	private void handleAuctionEnd() {
 		messageHandler.handleAuctionEnd();
+		listen = false;
 	}
 
 	/**

@@ -124,6 +124,7 @@ public class ConsoleListener extends Thread {
 					.println("Then restart the application and configure again.");
 			consoleHandler.handleQuit(true);
 		} else if (line.equals("y")) {
+			settings.actualRound = 0;
 			consoleHandler.declareAuctionSettings(settings);
 
 			int wrongInput = -1;

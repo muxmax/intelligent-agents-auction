@@ -13,6 +13,7 @@ import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.model.Offer;
 
 public class AuctionManager implements AuctionHandler, ConsoleHandler {
 
+	private static final int SECONDS = 20;
 	private NetworkController networkController;
 	private ConsoleListener consoleListener;
 	private AuctionSettings settings;
@@ -53,6 +54,7 @@ public class AuctionManager implements AuctionHandler, ConsoleHandler {
 	@Override
 	public void handleQuit(boolean error) {
 		if (networkController != null) {
+
 			networkController.shutDown();
 		}
 		System.out.println("... auction manager stopped");
@@ -67,14 +69,14 @@ public class AuctionManager implements AuctionHandler, ConsoleHandler {
 	 * A finished auction round is responsible to let begin the next round.
 	 */
 	public void beginNextRound() {
-		settings.actualRound++;
+		settings.actualRound = settings.actualRound + 1;
 		if (settings.actualRound != 1) {
 			dealtOffers.add(actualAuctionRound.getResult());
 		}
 		if (settings.actualRound <= settings.rounds) {
 			actualAuctionRound = new AuctionRound(settings, networkController);
 			Timer timer = new Timer();
-			timer.schedule(new AuctionEndTask(this), 1000 * 60);
+			timer.schedule(new AuctionEndTask(this), 1000 * SECONDS);
 		} else {
 			printResult();
 			handleQuit(false);

@@ -77,6 +77,15 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 	}
 
 	public synchronized void shutDown() {
+		for (ServerMessageConnection connection : messageConnections) {
+			try {
+				connection.getMessageSender().sendAuctionEndMessage();
+			} catch (IOException e) {
+				System.err.println("Error with socket output stream:\n" + e);
+			} catch (InvalidJsonMessageException e) {
+				System.err.println("Error with message protocoll:\n" + e);
+			}
+		}
 		listen = false;
 	}
 
