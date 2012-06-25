@@ -12,6 +12,16 @@ public class ClientMessageConnection {
 	private ClientMessageSender messageSender;
 
 	/**
+	 * Construct a message connection using the default port (50000).
+	 * @see ClientMessageConnection#ClientMessageConnection(InetAddress, int, ClientMessageHandler)
+	 */
+	public ClientMessageConnection(InetAddress address,
+			ClientMessageHandler messageHandler) throws IOException,
+			InvalidJsonMessageException {
+		this(address, 50000, messageHandler);
+	}
+
+	/**
 	 * Construct a message connection.
 	 * 
 	 * @param address
