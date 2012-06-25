@@ -80,12 +80,24 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 		listen = false;
 	}
 
-	public synchronized void sendNewRoundMessage(int round, int amount,
-			double price) {
+	public void sendNewRoundMessage(int round, int amount, double price) {
 		for (ServerMessageConnection connection : messageConnections) {
 			try {
 				connection.getMessageSender().sendNewRoundMessage(round,
 						amount, price);
+			} catch (IOException e) {
+				System.err.println("Error with socket output stream:\n" + e);
+			} catch (InvalidJsonMessageException e) {
+				System.err.println("Error with message protocoll:\n" + e);
+			}
+		}
+	}
+
+	public void sendAcceptedOffer(String participantID, double priceAccepted) {
+		for (ServerMessageConnection connection : messageConnections) {
+			try {
+				connection.getMessageSender().sendLastAcceptedOffer(
+						participantID, priceAccepted);
 			} catch (IOException e) {
 				System.err.println("Error with socket output stream:\n" + e);
 			} catch (InvalidJsonMessageException e) {
