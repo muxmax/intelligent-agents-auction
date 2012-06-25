@@ -14,7 +14,9 @@ public class ClientMessageConnection {
 
 	/**
 	 * Construct a message connection using the default port (50000).
-	 * @see ClientMessageConnection#ClientMessageConnection(InetAddress, int, ClientMessageHandler)
+	 * 
+	 * @see ClientMessageConnection#ClientMessageConnection(InetAddress, int,
+	 *      ClientMessageHandler)
 	 */
 	public ClientMessageConnection(InetAddress address,
 			ClientMessageHandler messageHandler) throws IOException,
@@ -47,7 +49,6 @@ public class ClientMessageConnection {
 		messageSender = new ClientMessageSender(socket.getOutputStream());
 		messageListener = new ClientMessageListener(socket.getInputStream(),
 				messageHandler);
-		messageListener.startListenting();
 	}
 
 	/**
@@ -58,9 +59,17 @@ public class ClientMessageConnection {
 	public ClientMessageSender getMessageSender() {
 		return messageSender;
 	}
-	
+
 	public int getPort() {
 		return port;
+	}
+
+	public void establish() {
+		try {
+			messageListener.startListenting();
+		} catch (InvalidJsonMessageException e) {
+			System.err.println("Couldn't listen on server connection.");
+		}
 	}
 
 }

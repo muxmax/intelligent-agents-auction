@@ -81,6 +81,11 @@ public class AuctionManager implements AuctionHandler, ConsoleHandler {
 		}
 	}
 
+	public void finishActualRound() {
+		networkController
+				.sendAuctionRoundEnd(actualAuctionRound.getResult().offerand);
+	}
+
 	/**
 	 * Print out the auction result.
 	 */

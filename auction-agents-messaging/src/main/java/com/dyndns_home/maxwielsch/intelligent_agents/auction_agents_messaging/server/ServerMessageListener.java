@@ -195,6 +195,10 @@ public class ServerMessageListener extends Thread {
 		char charackter;
 
 		while ((charackter = (char) in.read()) != MESSAGE_DELIMITER) {
+			if (charackter == -1 || charackter == 65535) {
+				listen = false;
+				break;
+			}
 			buffer.append(((char) charackter));
 		}
 		return buffer.toString();

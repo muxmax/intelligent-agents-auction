@@ -107,6 +107,24 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 	}
 
 	/**
+	 * Send a message to participants about finishing actual round.
+	 * 
+	 * @param winner
+	 *            The winner of the actual round.
+	 */
+	public void sendAuctionRoundEnd(String winner) {
+		for (ServerMessageConnection connection : messageConnections) {
+			try {
+				connection.getMessageSender().sendEndRoundMessage(winner);
+			} catch (IOException e) {
+				System.err.println("Error with socket output stream:\n" + e);
+			} catch (InvalidJsonMessageException e) {
+				System.err.println("Error with message protocoll:\n" + e);
+			}
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
