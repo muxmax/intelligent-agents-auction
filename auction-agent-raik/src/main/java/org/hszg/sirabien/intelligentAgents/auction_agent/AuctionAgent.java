@@ -70,8 +70,27 @@ public class AuctionAgent implements ClientMessageHandler {
 		long tenth = currentMoney / 10;
 		roundBet = 3 * tenth + random.nextInt(4 * (int) tenth);
 		roundAmount = amount;
-		System.out.println("new auction round, bet " + toMoney(roundBet)
-				+ " for " + amount + " units.");
+
+		if (roundBet < price)
+			roundBet = price;
+
+		if (roundBet > currentMoney) {
+			System.out
+					.println("new round, minimal bet is smaller than the remaining money, "
+							+ "sitting this one out");
+			try {
+				connection.getMessageSender().sendPauseMessage(roundNumber);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidJsonMessageException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		System.out.println("new round, bet " + toMoney(roundBet) + " for "
+				+ amount + " units.");
 		try {
 			connection.getMessageSender().sendParticipateMessage(roundNumber,
 					roundBet);
@@ -94,8 +113,10 @@ public class AuctionAgent implements ClientMessageHandler {
 	@Override
 	public void handleEndAuctionRound(String winner) {
 		boolean won = connection.isMe(winner);
-		currentMoney -= roundBet;
-		currentAmount += roundAmount;
+		if (won) {
+			currentMoney -= roundBet;
+			currentAmount += roundAmount;
+		}
 		System.out.print("end of round, "
 				+ (won ? "i've won" : "i haven't won"));
 		System.out.println(", current won amount: " + currentAmount
