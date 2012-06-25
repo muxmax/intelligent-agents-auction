@@ -33,7 +33,7 @@ public class AuctionRound implements AuctionRoundHandler {
 
 		networkController.setAuctionRoundHandler(this);
 
-		acceptedOffer = new Offer(settings.goods.get(settings.actualRound - 1));
+		acceptedOffer = new Offer(settings.goods.get(settings.actualRound - 1), settings.actualRound);
 
 		participantsOfferRecived = new HashMap<String, Long>();
 		offersRecived = 0;

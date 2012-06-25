@@ -10,8 +10,9 @@ public class Offer {
 	public long price;
 	public Good good;
 
-	public Offer(Good good) {
+	public Offer(Good good, int auctionRound) {
 		this.good = good;
+		this.auctionRound = auctionRound;
 	}
 
 	@Override
@@ -21,13 +22,13 @@ public class Offer {
 			sb.append("++++++++++++++++++++++++++++++++++++++\n");
 			sb.append("auction round: " + auctionRound);
 			sb.append("\nofferand: " + offerand);
-			sb.append("\nprice: " + price + "\n");
+			sb.append("\nprice: " + price / 100.00 + "\n");
 			sb.append("---- related good ----\n");
 			sb.append(good.toString());
 			sb.append("++++++++++++++++++++++++++++++++++++++\n");
 		} else {
 			sb.append("++++++++++++++++++++++++++++++++++++++\n");
-			sb.append("No offer for auction round " + auctionRound);
+			sb.append("No offer for auction round " + auctionRound + "\n");
 			sb.append("++++++++++++++++++++++++++++++++++++++\n");
 		}
 		return sb.toString();
