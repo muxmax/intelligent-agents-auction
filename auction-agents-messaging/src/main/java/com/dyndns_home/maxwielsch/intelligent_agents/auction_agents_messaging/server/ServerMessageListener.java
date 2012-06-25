@@ -140,7 +140,7 @@ public class ServerMessageListener extends Thread {
 			}
 		} catch (JSONException e) {
 			throw new InvalidJsonMessageException(
-					"The Server send an invalid JSON message!");
+					"The Server send an invalid JSON message!", e);
 		}
 	}
 
