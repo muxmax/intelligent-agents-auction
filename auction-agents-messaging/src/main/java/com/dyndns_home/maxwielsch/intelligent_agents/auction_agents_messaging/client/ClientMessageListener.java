@@ -152,7 +152,7 @@ public class ClientMessageListener {
 	private void handleNewRound(JSONObject jsonObject) throws JSONException {
 		int round = jsonObject.getInt("round");
 		int amount = jsonObject.getInt("amount");
-		double price = jsonObject.getDouble("price");
+		long price = jsonObject.getLong("price");
 		messageHandler.handleNewAuctionRound(round, amount, price);
 	}
 
@@ -191,7 +191,7 @@ public class ClientMessageListener {
 	 */
 	private void handleLastAcceptedOffer(JSONObject jsonObject) throws JSONException {
 		String participant = jsonObject.getString("participant");
-		double price = jsonObject.getDouble("price");
+		long price = jsonObject.getLong("price");
 		messageHandler.handleLastAcceptedOffer(participant, price);
 	}
 

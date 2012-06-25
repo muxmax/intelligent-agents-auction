@@ -13,14 +13,16 @@ public class AuctionAgent implements ClientMessageHandler {
 	/**
 	 * Time of one round in milliseconds.
 	 */
-	private static int ROUND_TIME = 1 * 60 * 1000;
+	private static final int ROUND_TIME = 1 * 60 * 1000;
+	private static final long START_MONEY = 100000;
 	
 	private ClientMessageConnection connection;
 	private InetAddress server;
+	private long currentMoney;
 
 	private AuctionAgent(String[] args) {
+		currentMoney = START_MONEY;
 		handleArgs(args);
-		
 	}
 
 	private void handleArgs(String[] args) {
@@ -53,13 +55,13 @@ public class AuctionAgent implements ClientMessageHandler {
 	}
 
 	@Override
-	public void handleNewAuctionRound(int roundNumber, int amount, double price) {
+	public void handleNewAuctionRound(int roundNumber, int amount, long price) {
 		// TODO Auto-generated method stub
 		System.out.println("new auction round");
 	}
 
 	@Override
-	public void handleLastAcceptedOffer(String participant, double price) {
+	public void handleLastAcceptedOffer(String participant, long price) {
 		// TODO Auto-generated method stub
 		System.out.println("last accepted offer");
 	}

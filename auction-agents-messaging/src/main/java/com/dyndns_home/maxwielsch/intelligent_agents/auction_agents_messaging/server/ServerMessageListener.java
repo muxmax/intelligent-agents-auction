@@ -176,7 +176,7 @@ public class ServerMessageListener extends Thread {
 	private void handleParticipation(JSONObject jsonObject)
 			throws JSONException {
 		int round = jsonObject.getInt("round");
-		double offer = jsonObject.getDouble("offer");
+		long offer = jsonObject.getLong("offer");
 		messageHandler.handleParticipation(round, offer, clientID);
 	}
 

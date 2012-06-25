@@ -17,9 +17,9 @@ public interface ClientMessageHandler {
 	 * @param amount
 	 *            The amount of the offered good.
 	 * @param price
-	 *            The price for the amount of the good.
+	 *            The price for the amount of the good in cents.
 	 */
-	public void handleNewAuctionRound(int roundNumber, int amount, double price);
+	public void handleNewAuctionRound(int roundNumber, int amount, long price);
 
 	/**
 	 * Handle the message for last accepted offer.
@@ -27,9 +27,9 @@ public interface ClientMessageHandler {
 	 * @param participant
 	 *            The participant whose offer was accept by the manager.
 	 * @param price
-	 *            The highest price that was offered.
+	 *            The highest price that was offered in cents.
 	 */
-	public void handleLastAcceptedOffer(String participant, double price);
+	public void handleLastAcceptedOffer(String participant, long price);
 
 	/**
 	 * Handle the message for the end of the actual auction round.

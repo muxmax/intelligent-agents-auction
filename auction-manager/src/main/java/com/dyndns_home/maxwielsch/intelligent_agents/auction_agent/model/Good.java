@@ -3,9 +3,12 @@ package com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.model;
 public class Good {
 
 	public int amount;
-	public double price;
+	/**
+	 * price in cents
+	 */
+	public long price;
 
-	public Good(int amount, double price) {
+	public Good(int amount, long price) {
 		this.amount = amount;
 		this.price = price;
 	}

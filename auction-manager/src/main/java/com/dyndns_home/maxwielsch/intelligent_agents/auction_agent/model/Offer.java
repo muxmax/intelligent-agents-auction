@@ -4,7 +4,10 @@ public class Offer {
 
 	public int auctionRound;
 	public String offerand;
-	public double price;
+	/**
+	 * price in cents
+	 */
+	public long price;
 	public Good good;
 
 	public Offer(Good good) {

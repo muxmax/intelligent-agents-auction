@@ -94,7 +94,7 @@ public class ServerMessageSender {
 	 * @param amount
 	 *            The amount in pieces of a some good to be offered.
 	 * @param price
-	 *            The price for the given amount of goods.
+	 *            The price for the given amount of goods in cents.
 	 * @throws IOException
 	 *             Will be thrown, if there occurs an error with the socket
 	 *             connection. This might happen when the socket was closed and
@@ -103,7 +103,7 @@ public class ServerMessageSender {
 	 *             Will be thrown when the created message could not be parsed
 	 *             into a JSON object.
 	 */
-	public void sendNewRoundMessage(int round, int amount, double price)
+	public void sendNewRoundMessage(int round, int amount, long price)
 			throws IOException, InvalidJsonMessageException {
 
 		Map<String, String> parameters = new HashMap<String, String>();
@@ -124,7 +124,7 @@ public class ServerMessageSender {
 	 *            The participant's name (must be unique) who made the highest
 	 *            offer.
 	 * @param priceAccepted
-	 *            The price that is accepted by the manager.
+	 *            The price that is accepted by the manager in cents.
 	 * @throws IOException
 	 *             Will be thrown, if there occurs an error with the socket
 	 *             connection. This might happen when the socket was closed and
@@ -133,7 +133,7 @@ public class ServerMessageSender {
 	 *             Will be thrown when the created message could not be parsed
 	 *             into a JSON object.
 	 */
-	public void sendLastAcceptedOffer(String clientID, double priceAccepted)
+	public void sendLastAcceptedOffer(String clientID, long priceAccepted)
 			throws IOException, InvalidJsonMessageException {
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("participant", clientID);

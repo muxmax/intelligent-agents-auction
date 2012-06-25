@@ -80,7 +80,7 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 		listen = false;
 	}
 
-	public void sendNewRoundMessage(int round, int amount, double price) {
+	public void sendNewRoundMessage(int round, int amount, long price) {
 		for (ServerMessageConnection connection : messageConnections) {
 			try {
 				connection.getMessageSender().sendNewRoundMessage(round,
@@ -93,7 +93,7 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 		}
 	}
 
-	public void sendAcceptedOffer(String participantID, double priceAccepted) {
+	public void sendAcceptedOffer(String participantID, long priceAccepted) {
 		for (ServerMessageConnection connection : messageConnections) {
 			try {
 				connection.getMessageSender().sendLastAcceptedOffer(
@@ -110,7 +110,7 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void handleParticipation(int round, double offer,
+	public void handleParticipation(int round, long offer,
 			String participantID) {
 		auctionRoundHandler.handleParticipation(round, offer, participantID);
 	}
@@ -132,7 +132,7 @@ public class NetworkController extends Thread implements ServerMessageHandler {
 	 * @param priceAccepted
 	 *            The price that was offered.
 	 */
-	public void propagateDecision(String participantID, double priceAccepted) {
+	public void propagateDecision(String participantID, long priceAccepted) {
 		for (ServerMessageConnection connection : messageConnections) {
 			try {
 				connection.getMessageSender().sendLastAcceptedOffer(

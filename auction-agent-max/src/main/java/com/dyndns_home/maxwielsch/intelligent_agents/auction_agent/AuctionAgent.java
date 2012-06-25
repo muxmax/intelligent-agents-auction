@@ -25,7 +25,7 @@ public class AuctionAgent implements ClientMessageHandler {
 		}
 	}
 
-	public void sendOffer(double price) {
+	public void sendOffer(long price) {
 		try {
 			connection.getMessageSender().sendParticipateMessage(1, price);
 			System.out.println("send offer: " + price);
@@ -38,7 +38,7 @@ public class AuctionAgent implements ClientMessageHandler {
 	}
 
 	@Override
-	public void handleNewAuctionRound(int roundNumber, int amount, double price) {
+	public void handleNewAuctionRound(int roundNumber, int amount, long price) {
 		System.out.println("new auction round:" + roundNumber + " amount, price: " + amount + ", " + price);
 		sendOffer(price + 3);
 	}
@@ -54,7 +54,7 @@ public class AuctionAgent implements ClientMessageHandler {
 	}
 
 	@Override
-	public void handleLastAcceptedOffer(String participant, double price) {
+	public void handleLastAcceptedOffer(String participant, long price) {
 		if (!participant.equals(connection.getPort())) {
 			sendOffer(price + 2);
 		}

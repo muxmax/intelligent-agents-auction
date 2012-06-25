@@ -4,7 +4,7 @@ import com.dyndns_home.maxwielsch.intelligent_agents.auction_agent.model.Offer;
 
 public interface AuctionRoundHandler {
 
-	public void handleParticipation(int round, double offer,
+	public void handleParticipation(int round, long offer,
 			String participantID);
 
 	public void handlePausing(String participantID);

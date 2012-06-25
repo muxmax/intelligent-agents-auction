@@ -14,7 +14,7 @@ public class AuctionRound implements AuctionRoundHandler {
 	private AuctionSettings settings;
 	private NetworkController networkController;
 	private Offer acceptedOffer;
-	private Map<String, Double> participantsOfferRecived;
+	private Map<String, Long> participantsOfferRecived;
 	private List<String> pausingParticipants;
 	private int offersRecived;
 
@@ -35,7 +35,7 @@ public class AuctionRound implements AuctionRoundHandler {
 
 		acceptedOffer = new Offer(settings.goods.get(settings.actualRound - 1));
 
-		participantsOfferRecived = new HashMap<String, Double>();
+		participantsOfferRecived = new HashMap<String, Long>();
 		offersRecived = 0;
 
 		pausingParticipants = new ArrayList<String>();
@@ -48,7 +48,7 @@ public class AuctionRound implements AuctionRoundHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void handleParticipation(int round, double offer,
+	public void handleParticipation(int round, long offer,
 			String participantID) {
 		System.out.println("--> recived offer: " + offer
 				+ " from participant with id: " + participantID);
@@ -71,7 +71,7 @@ public class AuctionRound implements AuctionRoundHandler {
 	 */
 	private void lookUpAcceptedOffer() {
 		for (String key : participantsOfferRecived.keySet()) {
-			double price = participantsOfferRecived.get(key);
+			long price = participantsOfferRecived.get(key);
 			if (price > acceptedOffer.price) {
 				acceptedOffer.price = price;
 				acceptedOffer.offerand = key;

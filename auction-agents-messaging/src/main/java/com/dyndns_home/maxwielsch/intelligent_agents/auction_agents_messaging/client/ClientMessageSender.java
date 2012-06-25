@@ -115,7 +115,7 @@ public class ClientMessageSender {
 	 * @param round
 	 *            The number of the actual auction round.
 	 * @param offer
-	 *            The price that shall be offered to the auction manager.
+	 *            The price that shall be offered to the auction manager in cents.
 	 * @throws IOException
 	 *             Will be thrown, if there occurs an error with the socket
 	 *             connection. This might happen when the socket was closed and
@@ -124,7 +124,7 @@ public class ClientMessageSender {
 	 *             Will be thrown when the created message could not be parsed
 	 *             into a JSON object.
 	 */
-	public void sendParticipateMessage(int round, double offer)
+	public void sendParticipateMessage(int round, long offer)
 			throws IOException, InvalidJsonMessageException {
 
 		Map<String, String> parameters = new HashMap<String, String>();

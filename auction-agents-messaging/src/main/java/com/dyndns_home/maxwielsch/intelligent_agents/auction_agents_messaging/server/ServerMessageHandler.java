@@ -15,12 +15,12 @@ public interface ServerMessageHandler {
 	 * @param round
 	 *            The auction's round to that the offer relates to.
 	 * @param offer
-	 *            The price that a client would pay.
+	 *            The price that a client would pay in censt.
 	 * @param participantID
 	 *            An unique value to identify a participant. This could be the
 	 *            client port.
 	 */
-	public void handleParticipation(int round, double offer,
+	public void handleParticipation(int round, long offer,
 			String participantID);
 
 	/**

@@ -91,7 +91,7 @@ public class ConsoleListener extends Thread {
 			Matcher matcher = goodsPattern.matcher(line);
 			if (matcher.matches()) {
 				settings.goods.add(new Good(Integer.parseInt(matcher
-						.group(1)), Double.parseDouble(matcher.group(2))));
+						.group(1)), Long.parseLong(matcher.group(2))));
 			} else {
 				System.out
 						.println("Please use the form (<amount>,<price>) to enter a good!\n"
