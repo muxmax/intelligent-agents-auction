@@ -45,6 +45,7 @@ public class AuctionAgent implements ClientMessageHandler {
 	private void start() {
 		try {
 			connection = new ClientMessageConnection(server, this);
+			connection.establish();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

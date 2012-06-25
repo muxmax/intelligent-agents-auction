@@ -35,11 +35,6 @@ public class ClientMessageConnection {
 	 *            The handler that will be called when a message comes in.
 	 * @throws IOException
 	 *             Will be thrown when an error occurs while listening.
-	 * @throws InvalidJsonMessageException
-	 *             Will be thrown when the communication partner sends an
-	 *             invalid JSON message. This doesn't necessarily mean that the
-	 *             message is not JSOn message. It only doesn't have the
-	 *             required key value pairs.
 	 */
 	public ClientMessageConnection(InetAddress address, int port,
 			ClientMessageHandler messageHandler) throws IOException,
@@ -63,13 +58,15 @@ public class ClientMessageConnection {
 	public int getPort() {
 		return port;
 	}
-
-	public void establish() {
-		try {
-			messageListener.startListenting();
-		} catch (InvalidJsonMessageException e) {
-			System.err.println("Couldn't listen on server connection.");
-		}
+	
+	/** @throws InvalidJsonMessageException
+	 *             Will be thrown when the communication partner sends an
+	 *             invalid JSON message. This doesn't necessarily mean that the
+	 *             message is not JSOn message. It only doesn't have the
+	 *             required key value pairs.
+	 */
+	public void establish() throws InvalidJsonMessageException {
+		messageListener.startListenting();
 	}
 
 }
