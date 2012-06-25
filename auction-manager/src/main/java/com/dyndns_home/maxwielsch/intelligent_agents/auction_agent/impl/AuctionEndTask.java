@@ -13,6 +13,7 @@ public class AuctionEndTask extends TimerTask {
 	
 	@Override
 	public void run() {
+		auctionManager.finishActualRound();
 		auctionManager.beginNextRound();
 		this.cancel();
 	}
