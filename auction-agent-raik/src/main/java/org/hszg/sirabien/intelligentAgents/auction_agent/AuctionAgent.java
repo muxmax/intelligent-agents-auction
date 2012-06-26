@@ -68,7 +68,7 @@ public class AuctionAgent implements ClientMessageHandler {
 	@Override
 	public void handleNewAuctionRound(int roundNumber, int amount, long price) {
 		long tenth = currentMoney / 10;
-		roundBet = 3 * tenth + random.nextInt(4 * (int) tenth);
+		roundBet = 3 * tenth + random.nextInt(2 * (int) tenth);
 		roundAmount = amount;
 
 		if (roundBet < price)
